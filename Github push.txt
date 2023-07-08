@@ -1,0 +1,20 @@
+*push :
+git init 
+git remote -v
+git remote add origin https:// . . . . . . .git
+git remote -v
+	git add README.md (iptonal)
+	echo "blabvls" >> README.md
+git add *
+git commit -m "blabla"
+git branch -M main
+git pus -u origin main
+
+*fecth
+git clone https:// . . . . . .git
+git remote -v 
+git add *
+git commit -m "blablabla"
+git push
+
+git pull
