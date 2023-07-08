@@ -13,6 +13,7 @@ git pus -u origin main
 *fecth
 git clone https:// . . . . . .git
 git remote -v 
+
 git add *
 git commit -m "blablabla"
 git push
