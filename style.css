@@ -17,8 +17,8 @@ header{
 }
 main{
     width: 70%;
-    height: 668px;
-    background: rgb(43, 226, 141);
+    height: 837px;
+    background: rgb(255, 255, 255);
 
     display: flex;
     justify-content: center;
@@ -26,7 +26,7 @@ main{
 }
 aside{
     width: 30%;
-    height: 668px;
+    height: 837px;
     background: grey;
 
     display: flex;
