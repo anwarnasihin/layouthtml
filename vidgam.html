@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Memutar Video dan Gambar</title>
+  <style>
+    .player {
+      display: none;
+    }
+
+    #container {
+      position: relative;
+      width: 400px;
+      height: 300px;
+    }
+
+    #videoPlayer, #imagePlayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="playVideoAndImage()">Putar Video dan Gambar</button>
+
+  <div id="container">
+    <video class="player" id="videoPlayer" width="400" height="300" onended="playVideoAndImage()"></video>
+
+    <img class="player" id="imagePlayer" src="" width="400" height="300">
+  </div>
+
+  <script>
+    var videos = ["video/vid-11.mp4", "video/3D popup card.mp4"];
+    var images = ["image/music-1.jpg", "image/music-2.jpg"];
+    var currentVideo = 0;
+    var currentImage = 0;
+    var videoPlayer = document.getElementById("videoPlayer");
+    var imagePlayer = document.getElementById("imagePlayer");
+
+    function playVideoAndImage() {
+      videoPlayer.style.display = "block";
+      imagePlayer.style.display = "block";
+
+      if (videoPlayer.style.display !== "none") {
+        videoPlayer.src = videos[currentVideo];
+        videoPlayer.load();
+        videoPlayer.play();
+        currentVideo = (currentVideo + 1) % videos.length;
+      } else {
+        imagePlayer.src = images[currentImage];
+        currentImage = (currentImage + 1) % images.length;
+      }
+    }
+
+    // Memulai pemutaran video dan gambar secara otomatis saat halaman dimuat
+    playVideoAndImage();
+  </script>
+</body>
+</html>
