@@ -1,108 +1,119 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Memutar Video dan Gambar</title>
-  <style>
-    .player {
-      display: none;
-    }
+    <title>Memutar Video dan Gambar</title>
+    <style>
+        .player {
+            display: none;
+        }
 
-    #container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #000;
-      z-index: 9999;
-    }
+        #container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+        }
 
-    #videoPlayer, #imagePlayer {
-      width: 100%;
-      height: 100%;
-    }
-  </style>
+        #videoPlayer, #imagePlayer {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-  <div id="container">
-    <video class="player" id="videoPlayer" controls></video>
+    <div id="container">
+        <video class="player" id="videoPlayer" controls></video>
 
-    <img class="player" id="imagePlayer" src="">
-  </div>
+        <img class="player" id="imagePlayer" src="">
+    </div>
 
-  <script>
-    var videos = ["video/vid-11.mp4", "video/3D popup card.mp4"];
-    var images = ["image/music-1.jpg", "image/music-2.jpg", "image/music-3.jpg"];
-    var currentVideo = 0;
-    var currentImage = 0;
-    var videoPlayer = document.getElementById("videoPlayer");
-    var imagePlayer = document.getElementById("imagePlayer");
-    var slideshowInterval;
+    <script>
+        var videos = [
+                      { src: "video/vid-11.mp4", duration: 15000 }, // Durasi video pertama diperpanjang menjadi 15 detik
+                      { src: "video/3D popup card.mp4", duration: 20000 } // Durasi video kedua diperpanjang menjadi 20 detik
+                    ];
 
-    function startSlideshow() {
-      videoPlayer.style.display = "block";
-      imagePlayer.style.display = "block";
+        var images = ["image/music-1.jpg", "image/music-2.jpg", "image/music-3.jpg"];
+        var currentVideo = 0;
+        var currentImage = 0;
+        var videoPlayer = document.getElementById("videoPlayer");
+        var imagePlayer = document.getElementById("imagePlayer");
+        var slideshowInterval;
 
-      // Stop the slideshow if it's currently running
-      stopSlideshow();
+        function startSlideshow() {
+            videoPlayer.style.display = "block";
+            imagePlayer.style.display = "block";
 
-      // Request fullscreen for the container element
-      var container = document.getElementById("container");
-      if (container.requestFullscreen) {
-        container.requestFullscreen();
-      } else if (container.mozRequestFullScreen) {
-        container.mozRequestFullScreen();
-      } else if (container.webkitRequestFullscreen) {
-        container.webkitRequestFullscreen();
-      } else if (container.msRequestFullscreen) {
-        container.msRequestFullscreen();
-      }
+            // Stop the slideshow if it's currently running
+            stopSlideshow();
 
-      // Start the slideshow
-      slideshowInterval = setInterval(function() {
-        playVideoAndImage();
-      }, 5000); // Change image/video every 5 seconds
-    }
+            // Request fullscreen for the container element
+            var container = document.getElementById("container");
+            if (container.requestFullscreen) {
+                container.requestFullscreen();
+            } else if (container.mozRequestFullScreen) {
+                container.mozRequestFullScreen();
+            } else if (container.webkitRequestFullscreen) {
+                container.webkitRequestFullscreen();
+            } else if (container.msRequestFullscreen) {
+                container.msRequestFullscreen();
+            }
 
-    function stopSlideshow() {
-      clearInterval(slideshowInterval);
-    }
+            // Start the slideshow
+            playVideoAndImage();
+        }
 
-    function playVideoAndImage() {
-      if (currentVideo < videos.length) {
-        videoPlayer.style.display = "block"; // Show video player
-        imagePlayer.style.display = "none"; // Hide image player
+        function stopSlideshow() {
+            clearInterval(slideshowInterval);
+        }
 
-        videoPlayer.src = videos[currentVideo];
-        videoPlayer.load();
-        videoPlayer.play();
-        currentVideo++;
-      } else if (currentImage < images.length) {
-        videoPlayer.style.display = "none"; // Hide video player
-        imagePlayer.style.display = "block"; // Show image player
+        function playVideoAndImage() {
+            if (currentVideo < videos.length) {
+                videoPlayer.style.display = "block"; // Show video player
+                imagePlayer.style.display = "none"; // Hide image player
 
-        imagePlayer.src = images[currentImage];
-        currentImage++;
-      } else {
-        currentVideo = 0; // Reset currentVideo index
-        currentImage = 0; // Reset currentImage index
-      }
+                var video = videos[currentVideo];
+                videoPlayer.src = video.src;
+                videoPlayer.load();
+                videoPlayer.play();
 
-      // If slideshow is completed, go back to the first slide
-      if (currentVideo === videos.length && currentImage === images.length) {
-        currentVideo = 0;
-        currentImage = 0;
-      }
-    }
+                // Delay the next slide transition based on the duration of the current video
+                slideshowInterval = setTimeout(function () {
+                    currentVideo++;
+                    playVideoAndImage();
+                }, video.duration);
+            } else if (currentImage < images.length) {
+                videoPlayer.style.display = "none"; // Hide video player
+                imagePlayer.style.display = "block"; // Show image player
 
-    videoPlayer.addEventListener("ended", function() {
-      playVideoAndImage();
-    });
+                imagePlayer.src = images[currentImage];
+                currentImage++;
 
-    // Autoplay slideshow when the page is loaded
-    document.addEventListener("DOMContentLoaded", function() {
-      startSlideshow();
-    });
-  </script>
+                // Delay the next slide transition for images
+                slideshowInterval = setTimeout(function () {
+                    playVideoAndImage();
+                }, 5000); // Change image every 5 seconds
+            } else {
+                currentVideo = 0; // Reset currentVideo index
+                currentImage = 0; // Reset currentImage index
+
+                // Start the slideshow from the beginning after all slides have been shown
+                playVideoAndImage();
+            }
+        }
+
+        videoPlayer.addEventListener("ended", function () {
+            currentVideo++;
+            playVideoAndImage();
+        });
+
+        // Autoplay slideshow when the page is loaded
+        document.addEventListener("DOMContentLoaded", function () {
+            startSlideshow();
+        });
+    </script>
 </body>
 </html>
