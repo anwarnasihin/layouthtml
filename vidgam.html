@@ -32,9 +32,9 @@
 
     <script>
         var videos = [
-                      { src: "video/vid-11.mp4", duration: 15000 }, // Durasi video pertama diperpanjang menjadi 15 detik
-                      { src: "video/3D popup card.mp4", duration: 20000 } // Durasi video kedua diperpanjang menjadi 20 detik
-                    ];
+          { src: "video/FIFTY FIFTY.mp4", duration: 60000 },
+          { src: "video/3D popup card.mp4", duration: 30000 }
+        ];
 
         var images = ["image/music-1.jpg", "image/music-2.jpg", "image/music-3.jpg"];
         var currentVideo = 0;
@@ -47,10 +47,8 @@
             videoPlayer.style.display = "block";
             imagePlayer.style.display = "block";
 
-            // Stop the slideshow if it's currently running
             stopSlideshow();
 
-            // Request fullscreen for the container element
             var container = document.getElementById("container");
             if (container.requestFullscreen) {
                 container.requestFullscreen();
@@ -62,7 +60,6 @@
                 container.msRequestFullscreen();
             }
 
-            // Start the slideshow
             playVideoAndImage();
         }
 
@@ -72,36 +69,34 @@
 
         function playVideoAndImage() {
             if (currentVideo < videos.length) {
-                videoPlayer.style.display = "block"; // Show video player
-                imagePlayer.style.display = "none"; // Hide image player
+                videoPlayer.style.display = "block";
+                imagePlayer.style.display = "none";
 
                 var video = videos[currentVideo];
                 videoPlayer.src = video.src;
                 videoPlayer.load();
                 videoPlayer.play();
 
-                // Delay the next slide transition based on the duration of the current video
                 slideshowInterval = setTimeout(function () {
                     currentVideo++;
                     playVideoAndImage();
                 }, video.duration);
             } else if (currentImage < images.length) {
-                videoPlayer.style.display = "none"; // Hide video player
-                imagePlayer.style.display = "block"; // Show image player
+                videoPlayer.style.display = "none";
+                imagePlayer.style.display = "block";
 
                 imagePlayer.src = images[currentImage];
                 currentImage++;
 
-                // Delay the next slide transition for images
                 slideshowInterval = setTimeout(function () {
-                    playVideoAndImage();
-                }, 5000); // Change image every 5 seconds
-            } else {
-                currentVideo = 0; // Reset currentVideo index
-                currentImage = 0; // Reset currentImage index
-
-                // Start the slideshow from the beginning after all slides have been shown
-                playVideoAndImage();
+                    if (currentImage >= images.length) {
+                        currentVideo = 0;
+                        currentImage = 0;
+                        playVideoAndImage();
+                    } else {
+                        playVideoAndImage();
+                    }
+                }, 5000);
             }
         }
 
@@ -110,7 +105,6 @@
             playVideoAndImage();
         });
 
-        // Autoplay slideshow when the page is loaded
         document.addEventListener("DOMContentLoaded", function () {
             startSlideshow();
         });
