@@ -21,19 +21,57 @@
             width: 100%;
             height: 100%;
         }
+
+        #date {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: #fff;
+            font-size: 18px;
+            opacity: 0.5; /* Tambahkan properti opacity */
+            font-family: "Segoe UI", Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 0.5px;
+        }
+
+        #day {
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 1; /* Tambahkan properti opacity */
+            font-family: "Segoe UI", Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 2px;
+        }
+
+        #clock {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            color: #fff;
+            font-size: 50px;
+            opacity: 0.5; /* Tambahkan properti opacity */
+            font-family: "Segoe UI", Arial, sans-serif;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div id="container">
+        <div id="date">
+            <span id="day"></span>, <span id="formattedDate"></span>
+        </div>
+        <div id="clock"></div>
         <video class="player" id="videoPlayer" controls muted></video>
-
         <img class="player" id="imagePlayer" src="">
     </div>
 
     <script>
         var videos = [
-          { src: "video/FIFTY FIFTY.mp4", duration: 60000 },
-          { src: "video/3D popup card.mp4", duration: 30000 }
+          { src: "video/build gauge with css.mp4", duration: 3000000 },
+          { src: "video/customize HTML5 form elements.mp4", duration: 60000 },
+          { src: "video/3D popup card.mp4", duration: 60000 }
         ];
 
         var images = ["image/music-1.jpg", "image/music-2.jpg", "image/music-3.jpg"];
@@ -41,6 +79,9 @@
         var currentImage = 0;
         var videoPlayer = document.getElementById("videoPlayer");
         var imagePlayer = document.getElementById("imagePlayer");
+        var clock = document.getElementById("clock");
+        var dayElement = document.getElementById("day");
+        var formattedDateElement = document.getElementById("formattedDate");
         var slideshowInterval;
 
         function startSlideshow() {
@@ -61,6 +102,7 @@
             }
 
             playVideoAndImage();
+            updateTime();
         }
 
         function stopSlideshow() {
@@ -104,6 +146,37 @@
             currentVideo++;
             playVideoAndImage();
         });
+
+        function updateTime() {
+            var currentDate = new Date();
+            var hours = currentDate.getHours();
+            var minutes = currentDate.getMinutes();
+            var seconds = currentDate.getSeconds();
+            var day = currentDate.getDay();
+            var date = currentDate.getDate();
+            var month = currentDate.getMonth();
+            var year = currentDate.getFullYear();
+
+            // Mengatur format waktu dengan 2 digit
+            hours = (hours < 10) ? "0" + hours : hours;
+            minutes = (minutes < 10) ? "0" + minutes : minutes;
+            seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+            // Mengatur format tanggal dengan 2 digit
+            date = (date < 10) ? "0" + date : date;
+
+            var dayNames = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            var monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            var dayName = dayNames[day];
+            var monthName = monthNames[month];
+
+            dayElement.textContent = dayName;
+            formattedDateElement.textContent = date + " " + monthName + " " + year;
+
+            clock.textContent = hours + ":" + minutes + ":" + seconds;
+
+            setTimeout(updateTime, 1000); // Memperbarui waktu setiap detik
+        }
 
         document.addEventListener("DOMContentLoaded", function () {
             startSlideshow();
